@@ -35,11 +35,18 @@
 			$name 		= $_POST["name"];
 			$correo		= $_POST["correo"];
 			$password_encriptada = sha1($password);
+			if($usuario == "mantenimiento" && $password_encriptada == "2c564879968adbf9875ea151b00dacc051437447"){
+				echo "<script>
+				alert('Usuario restringido');
+				window.location = 'index.php';
+				</script>";
+			}
+			
 			$fp = fopen("db.txt","r+");
 			
 			while(!feof($fp)){
 				$linea = fgets($fp);
-				$linea_split = explode(",",$linea);
+				$linea_split = explode(",",$linea); //regresa un array
 				if($linea_split[1] == $usuario || $linea_split[4] == $correo){
 					echo "<script>
 						alert('Usuario ya registrado');
@@ -56,10 +63,13 @@
 					$name.",".
 					$correo.","
 					);
+					echo "<script>
+					alert('Usuario registrado exitosamente');
+					window.location = 'LoginTxt.php';
+					</script>";
 				}
 			}
 			fclose($fp);
-			header("Location: LoginTxt.php");
 		}
 		?>
 	</form>
